@@ -1,12 +1,11 @@
 # Spark Analysis – Parquet & JSON Data from HDFS
 
-This part of the project uses **PySpark** to read two of the datasets stored in HDFS (see the **HDFS_Project_Screenshots** folder), analyse them with DataFrame and SQL operations, and write the results back to HDFS as CSV.
+This part of the project uses **PySpark** to read two of the datasets stored in HDFS (see the **HDFS_Project_Screenshots** folder), analyse them with DataFrame and SQL operations, and write the Gold vs Bitcoin results back to HDFS as CSV.
 
 | Folder | Input (HDFS) | Script | Output (HDFS) |
 |---|---|---|---|
 | [`parquet/`](parquet) | `/projects/structured/parquet/Gold_vs_Bitcoin.parquet` | `gold_vs_bitcoin_parquet_analysis.py` | `/projects/structured/csv/gold_vs_bitcoin_csv/` |
-| [`json/`](json) | `/projects/semi_structured/json/Employees.json` | `employees_json_analysis_with_csv_export.py` | `/projects/structured/csv/employees_flat_csv/` |
-| [`json/`](json) | same | `employees_json_analysis.py` | — (analysis only, no export) |
+| [`json/`](json) | `/projects/semi_structured/json/Employees.json` | `employees_json_analysis.py` | — (analysis only) |
 
 ```
 Spark_Analysis/
@@ -15,7 +14,6 @@ Spark_Analysis/
 │   └── screenshots/Gold_vs_Bitcoin_spark_1 … 5
 └── json/
     ├── scripts/employees_json_analysis.py
-    ├── scripts/employees_json_analysis_with_csv_export.py
     └── screenshots/Employees_spark_1 … 3
 ```
 
@@ -25,7 +23,7 @@ Scripts were run from `~/hdfs_project/spark` on `hadoop-master`, with HDFS as th
 
 ```bash
 spark-submit parquet/scripts/gold_vs_bitcoin_parquet_analysis.py
-spark-submit json/scripts/employees_json_analysis_with_csv_export.py
+spark-submit json/scripts/employees_json_analysis.py
 ```
 
 Both scripts set the log level to `WARN` to keep the output readable.
@@ -80,13 +78,12 @@ Screenshots: [`parquet/screenshots/`](parquet/screenshots)
 
 ## 2. Employees (JSON) – Spark SQL
 
-Scripts: [`json/scripts/`](json/scripts)
+Script: [`json/scripts/employees_json_analysis.py`](json/scripts/employees_json_analysis.py)
 
 **Steps**
 1. Read the nested JSON with `multiline=true`, print the schema, register it as `raw_tbl`.
 2. Flatten it into the view `employees_tbl` with `explode(employees)` and dot-paths into `profile.contact.address…`. Latitude/longitude are strings in the source, so they are converted with `TRY_CAST(... AS DOUBLE)`.
 3. SQL queries: preview, `DESCRIBE`, total count, null checks, employees per country / state / city / email domain, latitude stats, filter `state = 'FL'`.
-4. (`_with_csv_export` version only) write `employees_tbl` to HDFS as CSV.
 
 **Flattened table (`employees_tbl`)**
 

@@ -36,4 +36,4 @@ HDFS_And_Spark_Project/
 | Analysis | Script | Highlights |
 |---|---|---|
 | Gold vs Bitcoin (Parquet, DataFrame API) | [`gold_vs_bitcoin_parquet_analysis.py`](Spark_Analysis/parquet/scripts/gold_vs_bitcoin_parquet_analysis.py) | 517 rows, 0 nulls, per-minute averages, correlation 0.145, Bitcoin led 375 s vs Gold 142 s, output saved as CSV in HDFS |
-| Employees (nested JSON, Spark SQL) | [`employees_json_analysis_with_csv_export.py`](Spark_Analysis/json/scripts/employees_json_analysis_with_csv_export.py) | Flattened with `explode` + nested paths, null checks, group-bys by country/state/city/email domain, export to CSV |
+| Employees (nested JSON, Spark SQL) | [`employees_json_analysis.py`](Spark_Analysis/json/scripts/employees_json_analysis.py) | Flattened with `explode` + nested paths, null checks, group-bys by country/state/city/email domain |
